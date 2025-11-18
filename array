@@ -1,0 +1,247 @@
+#Simple Python Program (Create & Display 1D Array)
+# Program to create and display a 1D array
+
+# Step 1: Take size of array
+n = int(input("Enter number of elements: "))
+
+# Step 2: Create array and take input
+arr = []
+for i in range(n):
+    value = int(input(f"Enter element {i+1}: "))
+    arr.append(value)
+
+# Step 3: Display the array
+print("Array elements are:")
+for num in arr:
+    print(num, end=" ")
+
+
+
+    
+# Q1: Create and Display 1D Array
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+print("Array elements are:")
+for x in arr:
+    print(x, end=" ")
+
+
+
+# Q2: Sum and Average of 1D Array
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+total = sum(arr)
+avg = total / n
+
+print("Sum =", total)
+print("Average =", avg)
+
+
+
+# Q3: Linear Search
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+key = int(input("Enter element to search: "))
+
+found = False
+for i in range(n):
+    if arr[i] == key:
+        print(f"Element found at position {i+1}")
+        found = True
+        break
+
+if not found:
+    print("Element not found")
+
+
+    
+# Q4: Find Maximum and Minimum in Array
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+maximum = arr[0]
+minimum = arr[0]
+
+for x in arr:
+    if x > maximum:
+        maximum = x
+    if x < minimum:
+        minimum = x
+
+print("Maximum =", maximum)
+print("Minimum =", minimum)
+
+
+
+
+# Q5: Insertion and Deletion in Array
+
+arr = []
+
+while True:
+    print("\n1. Insert")
+    print("2. Delete")
+    print("3. Display")
+    print("4. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        pos = int(input("Enter position: "))
+        val = int(input("Enter value: "))
+        arr.insert(pos - 1, val)
+        print("Inserted Successfully!")
+
+    elif choice == 2:
+        pos = int(input("Enter position to delete: "))
+        if 0 < pos <= len(arr):
+            arr.pop(pos - 1)
+            print("Deleted Successfully!")
+        else:
+            print("Invalid Position!")
+
+    elif choice == 3:
+        print("Array =", arr)
+
+    elif choice == 4:
+        break
+
+    else:
+        print("Invalid Choice!")
+
+
+
+
+# Q6: Sorting Array in Ascending Order
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+arr.sort()
+
+print("Sorted Array:", arr)
+
+
+
+
+# Q7: Reverse Array without reverse()
+
+n = int(input("Enter number of elements: "))
+arr = []
+
+for i in range(n):
+    arr.append(int(input(f"Enter element {i+1}: ")))
+
+i = 0
+j = n - 1
+
+while i < j:
+    arr[i], arr[j] = arr[j], arr[i]
+    i += 1
+    j -= 1
+
+print("Reversed Array:", arr)
+
+
+
+# Q8: Create and Display 2D Matrix
+
+rows = int(input("Enter number of rows: "))
+cols = int(input("Enter number of columns: "))
+
+matrix = []
+
+print("Enter elements row-wise:")
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    matrix.append(row)
+
+print("Matrix:")
+for r in matrix:
+    print(r)
+
+
+
+# Q9: Matrix Addition
+
+rows = int(input("Enter number of rows: "))
+cols = int(input("Enter number of columns: "))
+
+A = []
+B = []
+
+print("Enter elements for Matrix A:")
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    A.append(row)
+
+print("Enter elements for Matrix B:")
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    B.append(row)
+
+C = []
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(A[i][j] + B[i][j])
+    C.append(row)
+
+print("Resultant Matrix (A + B):")
+for r in C:
+    print(r)
+
+
+
+# Q10: Transpose of Matrix
+
+rows = int(input("Enter number of rows: "))
+cols = int(input("Enter number of columns: "))
+
+matrix = []
+
+print("Enter matrix elements:")
+for i in range(rows):
+    row = []
+    for j in range(cols):
+        row.append(int(input()))
+    matrix.append(row)
+
+transpose = []
+for i in range(cols):
+    row = []
+    for j in range(rows):
+        row.append(matrix[j][i])
+    transpose.append(row)
+
+print("Transpose:")
+for r in transpose:
+    print(r)
