@@ -1,0 +1,302 @@
+LL-1: Build + push_front + push_back + delete_value + print
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+head = None
+tail = None
+
+def push_front(x):
+    global head, tail
+    n = Node(x)
+    n.next = head
+    head = n
+    if tail is None:
+        tail = n
+
+def push_back(x):
+    global head, tail
+    n = Node(x)
+    if head is None:
+        head = tail = n
+    else:
+        tail.next = n
+        tail = n
+
+def delete_value(x):
+    global head, tail
+    if head is None: return
+    if head.data == x:
+        head = head.next
+        if head is None: tail = None
+        return
+    curr = head
+    while curr.next and curr.next.data != x:
+        curr = curr.next
+    if curr.next:
+        if curr.next == tail:
+            tail = curr
+        curr.next = curr.next.next
+
+def print_list():
+    temp = head
+    while temp:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+✅ LL-2: Reverse in K-Group
+def reverse_k_group(head, k):
+    dummy = Node(0)
+    dummy.next = head
+    prev = dummy
+
+    while True:
+        curr = prev.next
+        tail = prev
+        for _ in range(k):
+            tail = tail.next
+            if not tail:
+                return dummy.next
+
+        nxt = tail.next
+        prev2 = nxt
+        cur2 = curr
+
+        for _ in range(k):
+            t = cur2.next
+            cur2.next = prev2
+            prev2 = cur2
+            cur2 = t
+
+        prev.next = prev2
+        prev = curr
+
+✅ LL-3: Remove Duplicates (Unsorted)
+def remove_duplicates(head):
+    seen = set()
+    prev = None
+    curr = head
+    while curr:
+        if curr.data in seen:
+            prev.next = curr.next
+        else:
+            seen.add(curr.data)
+            prev = curr
+        curr = curr.next
+    return head
+
+✅ LL-4: Detect & Remove Cycle
+def remove_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            break
+    else:
+        return head
+
+    slow = head
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+    start = slow
+
+    temp = start
+    while temp.next != start:
+        temp = temp.next
+    temp.next = None
+    return head
+
+✅ LL-5: Palindrome Check
+def is_palindrome(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    prev = None
+    curr = slow
+    while curr:
+        t = curr.next
+        curr.next = prev
+        prev = curr
+        curr = t
+
+    first = head
+    second = prev
+    while second:
+        if first.data != second.data:
+            return False
+        first = first.next
+        second = second.next
+    return True
+
+⭐ STACK PROGRAMS (Short Python)
+✅ ST-1: Balanced Brackets
+def balanced(s):
+    stack = []
+    pair = {')':'(', ']':'[', '}':'{'}
+    for ch in s:
+        if ch in "([{":
+            stack.append(ch)
+        else:
+            if not stack or stack[-1] != pair[ch]:
+                return False
+            stack.pop()
+    return len(stack) == 0
+
+✅ ST-2: Next Greater Element
+def next_greater(arr):
+    res = [-1]*len(arr)
+    stack = []
+    for i in range(len(arr)):
+        while stack and arr[i] > arr[stack[-1]]:
+            res[stack.pop()] = arr[i]
+        stack.append(i)
+    return res
+
+✅ ST-3: Evaluate Postfix
+def eval_postfix(expr):
+    stack = []
+    for x in expr.split():
+        if x.isdigit():
+            stack.append(int(x))
+        else:
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(eval(f"{a}{x}{b}"))
+    return stack[0]
+
+✅ ST-4: Infix → Postfix
+def infix_to_postfix(exp):
+    prec = {'+':1,'-':1,'*':2,'/':2}
+    stack = []
+    out = ""
+    for ch in exp:
+        if ch.isalnum():
+            out += ch
+        elif ch == '(':
+            stack.append(ch)
+        elif ch == ')':
+            while stack and stack[-1] != '(':
+                out += stack.pop()
+            stack.pop()
+        else:
+            while stack and stack[-1] != '(' and prec[stack[-1]] >= prec[ch]:
+                out += stack.pop()
+            stack.append(ch)
+    while stack:
+        out += stack.pop()
+    return out
+
+✅ ST-5: Stack Using Two Queues
+from collections import deque
+
+class MyStack:
+    def __init__(self):
+        self.q1 = deque()
+        self.q2 = deque()
+
+    def push(self, x):
+        self.q2.append(x)
+        while self.q1:
+            self.q2.append(self.q1.popleft())
+        self.q1, self.q2 = self.q2, self.q1
+
+    def pop(self):
+        return self.q1.popleft()
+
+    def top(self):
+        return self.q1[0]
+
+⭐ QUEUE PROGRAMS (Short Python)
+✅ Q-1: Circular Queue
+class CircularQueue:
+    def __init__(self, size):
+        self.q = [0]*size
+        self.size = size
+        self.front = self.rear = -1
+
+    def enqueue(self, x):
+        if (self.rear + 1) % self.size == self.front:
+            return
+        if self.front == -1:
+            self.front = 0
+        self.rear = (self.rear + 1) % self.size
+        self.q[self.rear] = x
+
+    def dequeue(self):
+        if self.front == -1:
+            return
+        if self.front == self.rear:
+            self.front = self.rear = -1
+        else:
+            self.front = (self.front + 1) % self.size
+
+✅ Q-2: Sliding Window Maximum
+from collections import deque
+
+def sliding_max(arr, k):
+    dq = deque()
+    res = []
+    for i, v in enumerate(arr):
+        while dq and dq[0] <= i-k:
+            dq.popleft()
+        while dq and arr[dq[-1]] <= v:
+            dq.pop()
+        dq.append(i)
+        if i >= k-1:
+            res.append(arr[dq[0]])
+    return res
+
+✅ Q-3: Queue Using Two Stacks
+class MyQueue:
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
+
+    def enqueue(self, x):
+        self.s1.append(x)
+
+    def dequeue(self):
+        if not self.s2:
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2.pop()
+
+✅ Q-4: Round Robin Scheduler
+from collections import deque
+
+def round_robin(jobs, q):
+    time = 0
+    dq = deque(jobs)
+    order = []
+    while dq:
+        name, bt = dq.popleft()
+        if bt > q:
+            dq.append((name, bt - q))
+            time += q
+        else:
+            time += bt
+            order.append(name)
+    return order
+
+✅ Q-5: Printer Queue (Priority Simulation)
+from collections import deque
+
+def printer_queue(priorities, idx):
+    q = deque((p, i) for i, p in enumerate(priorities))
+    count = 0
+    while q:
+        p, i = q[0]
+        if p < max(priorities):
+            q.rotate(-1)
+        else:
+            priorities.remove(p)
+            q.popleft()
+            count += 1
+            if i == idx:
+                return count
