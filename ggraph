@@ -1,0 +1,116 @@
+Q1 — Graph Representation (Adjacency Matrix & List)
+# Adjacency Matrix and List
+
+vertices = ["A","B","C","D"]
+edges = [("A","B"),("A","C"),("B","D"),("C","D")]
+
+n = len(vertices)
+matrix = [[0]*n for _ in range(n)]
+adj_list = {v: [] for v in vertices}
+
+for u, v in edges:
+    i = vertices.index(u)
+    j = vertices.index(v)
+    matrix[i][j] = matrix[j][i] = 1
+    adj_list[u].append(v)
+    adj_list[v].append(u)
+
+print("Adjacency Matrix:")
+for row in matrix:
+    print(row)
+
+print("\nAdjacency List:")
+for v in adj_list:
+    print(v, "->", adj_list[v])
+
+⭐ Q2 — DFS Traversal (Short & Simple)
+graph = {1:[2,3], 2:[4], 3:[5], 4:[], 5:[]}
+
+visited = set()
+
+def dfs(v):
+    visited.add(v)
+    print(v, end=" ")
+    for n in graph[v]:
+        if n not in visited:
+            dfs(n)
+
+print("DFS Traversal:")
+dfs(1)
+
+⭐ Q3 — BFS Traversal (Shortest Version)
+from collections import deque
+
+graph = {1:[2,3], 2:[4], 3:[5], 4:[], 5:[]}
+
+def bfs(start):
+    q = deque([start])
+    visited = {start}
+    while q:
+        v = q.popleft()
+        print(v, end=" ")
+        for n in graph[v]:
+            if n not in visited:
+                visited.add(n)
+                q.append(n)
+
+print("BFS Traversal:")
+bfs(1)
+
+⭐ Q4 — Kruskal’s Algorithm (Short MST Program)
+edges = [('A','B',1), ('B','C',3), ('A','C',2), ('C','D',4)]
+parent = {}
+
+def find(x):
+    if parent[x] == x: return x
+    parent[x] = find(parent[x])
+    return parent[x]
+
+def union(a, b):
+    parent[find(a)] = find(b)
+
+# init parents
+for u,v,w in edges:
+    parent[u] = u
+    parent[v] = v
+
+edges.sort(key=lambda x: x[2])
+mst = []
+cost = 0
+
+for u,v,w in edges:
+    if find(u) != find(v):
+        union(u, v)
+        mst.append((u, v))
+        cost += w
+
+print("Edges in MST:", mst)
+print("Total Cost:", cost)
+
+⭐ Q5 — Dijkstra’s Algorithm (Shortest Program)
+import heapq
+
+graph = {
+    'A':[('B',2),('C',4)],
+    'B':[('C',1),('D',7)],
+    'C':[('E',3)],
+    'D':[('E',1)],
+    'E':[]
+}
+
+def dijkstra(src):
+    dist = {v: float('inf') for v in graph}
+    dist[src] = 0
+    pq = [(0, src)]
+
+    while pq:
+        d, u = heapq.heappop(pq)
+        for v, w in graph[u]:
+            if d + w < dist[v]:
+                dist[v] = d + w
+                heapq.heappush(pq, (dist[v], v))
+    return dist
+
+dist = dijkstra('A')
+for v in dist:
+    print(f"Distance from A to {v}: {dist[v]}")
