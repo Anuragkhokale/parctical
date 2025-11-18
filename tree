@@ -1,0 +1,123 @@
+Q1 — Binary Tree Traversals (Short Program)
+class Node:
+    def __init__(self, x):
+        self.data = x
+        self.left = self.right = None
+
+def inorder(root):
+    if root:
+        inorder(root.left)
+        print(root.data, end=" ")
+
+def preorder(root):
+    if root:
+        print(root.data, end=" ")
+        preorder(root.left)
+        preorder(root.right)
+
+def postorder(root):
+    if root:
+        postorder(root.left)
+        postorder(root.right)
+        print(root.data, end=" ")
+
+# Example Tree
+root = Node("A")
+root.left = Node("B")
+root.right = Node("C")
+root.left.left = Node("D")
+root.left.right = Node("E")
+
+print("Inorder:")
+inorder(root)
+print("\nPreorder:")
+preorder(root)
+print("\nPostorder:")
+postorder(root)
+
+✅ Q2 — Height of Binary Tree (Short Program)
+def height(root):
+    if root is None:
+        return -1
+    return 1 + max(height(root.left), height(root.right))
+
+print("Height of tree =", height(root))
+
+✅ Q3 — Count Leaf & Non-Leaf Nodes (Short Program)
+def count_nodes(root):
+    if root is None:
+        return (0, 0)
+    if root.left is None and root.right is None:
+        return (1, 0)
+    l_leaf, l_non = count_nodes(root.left)
+    r_leaf, r_non = count_nodes(root.right)
+    return (l_leaf + r_leaf, l_non + r_non + 1)
+
+leaf, non_leaf = count_nodes(root)
+print("Leaf Nodes =", leaf)
+print("Non-Leaf Nodes =", non_leaf)
+
+✅ Q4 — Expression Tree from Postfix (Short Program)
+class Node:
+    def __init__(self, x):
+        self.data = x
+        self.left = self.right = None
+
+def build(postfix):
+    stack = []
+    for ch in postfix:
+        if ch.isalnum():
+            stack.append(Node(ch))
+        else:
+            r = stack.pop()
+            l = stack.pop()
+            n = Node(ch)
+            n.left = l
+            n.right = r
+            stack.append(n)
+    return stack[0]
+
+def inorder(t):
+    if t:
+        if not t.data.isalnum():
+            print("(", end="")
+        inorder(t.left)
+        print(t.data, end="")
+        inorder(t.right)
+        if not t.data.isalnum():
+            print(")", end="")
+
+def preorder(t):
+    if t:
+        print(t.data, end="")
+        preorder(t.left)
+        preorder(t.right)
+
+def postorder(t):
+    if t:
+        postorder(t.left)
+        postorder(t.right)
+        print(t.data, end="")
+
+root = build("AB+CD-*")
+
+print("Inorder:", end=" ")
+inorder(root)
+print("\nPreorder:", end=" ")
+preorder(root)
+print("\nPostorder:", end=" ")
+postorder(root)
+
+✅ Q5 — Level Order Traversal (BFS)
+from collections import deque
+
+def level_order(root):
+    q = deque([root])
+    while q:
+        n = q.popleft()
+        print(n.data, end=" ")
+        if n.left: q.append(n.left)
+        if n.right: q.append(n.right)
+
+print("Level Order Traversal:")
+level_order(root)
